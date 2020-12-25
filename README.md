@@ -2,7 +2,7 @@
 
 基于树莓派CM4模块的开源工业控制平台 
 
-**该存储库由 阔奥智能设备（上海）有限公司 委托 feecat于[github.com/feecat/codepi](github.com/feecat/codepi)上托管。** 
+**该存储库由 阔奥智能设备（上海）有限公司 委托 feecat于[github.com/feecat/codepi](https://github.com/feecat/codepi)上托管。** 
 
 **主要包含CodePI PCB原理图、定制的PreemptRT补丁包、教程及常见问题等。** 
 
