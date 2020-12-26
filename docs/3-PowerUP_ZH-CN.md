@@ -25,8 +25,9 @@
 2、连接供电。此时您应该看到蓝色指示灯长亮。  
 3、在电脑上运行rpiboot（开始菜单-Raspberry pi-rpiboot）。运行之后此电脑会多一个盘符。  
 4、使用win32diskimager或balenaEtcher烧写固件，请注意不要选错盘符。  
-5、烧录完成后断开主供电，待电源指示灯熄灭后断开MicroUSB。  
-6、连接主供电、显示设备和键盘鼠标，等待系统安装完成  
+5、烧录完成后编辑boot盘的config.txt文件，末尾加上```dtoverlay=dwc2,dr_mode=host``` 。  
+6、烧录完成后断开主供电，待电源指示灯熄灭后断开MicroUSB。  
+7、连接主供电、显示设备和键盘鼠标，等待系统安装完成  
 
 </br>
 
