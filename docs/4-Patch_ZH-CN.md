@@ -102,3 +102,7 @@ sudo apt-get purge fake-hwclock
 
 请参阅[https://github.com/scruss/RonR-RaspberryPi-image-utils](https://github.com/scruss/RonR-RaspberryPi-image-utils)
 
+
+</br>
+
+[返回上一页](https://github.com/feecat/codepi)
