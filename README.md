@@ -6,6 +6,11 @@
 
 **包含CODEPI PCB原理图、定制的PreemptRT补丁包、教程及常见问题等。** 
 
+[![](https://github.com/feecat/codepi/blob/main/docs/banner_2.gif)](https://item.taobao.com/item.htm?ft=t&id=635013789059)  
+
+[![](https://github.com/feecat/codepi/blob/main/docs/banner_3.png)](https://item.taobao.com/item.htm?ft=t&id=635013789059)  
+
+
   -----------------------
 
 ### 如果您第一次来到这里，请选择您想要先了解什么：  
