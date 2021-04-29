@@ -25,12 +25,17 @@ B：降低占用
 我们拿一个典型的自动化项目举例，该项目对实时性要求不是特别高（有凸轮，无多轴插补），但要求EtherCAT驱动通讯+Visualization显示+Modbus网关通讯。我们通过以下方式优化实时性：  
   
 a) 将PLC中的运行时升级到MultiCore多核版本，并将CoDeSys项目升级到多核版本  
-b) 编辑`/boot/cmdline.txt`，在末尾加上`isolcpus=2,3 irqaffinity=0,1 nohz_full=2,3 rcu_nocbs=2,3 nowatchdog acpi_irq_nobalance`以将2、3核心隔离出来，并优化中断占用。  
-c) 在codesys中划分核心占用，将运动控制相关的程序划归到`EtherCAT_Task`，并将其划归到核心3上，该核心为实时核心。  
+b) 编辑`/boot/cmdline.txt`，在末尾加上`isolcpus=2,3`以将2、3核心隔离出来，并优化中断占用。  
+c) 在codesys中划分核心占用，将运动控制相关的程序划归到`EtherCAT_Task`，并将其优先级设置为0，任务组划归到核心3上，该核心为实时核心。  
 d) 将一般plc逻辑划归到核心2上（如果PLC逻辑不复杂也可以划归到实时任务中）。  
-e) 将visualization和modbus划归到核心1或核心0上，此类任务不需要实时，将它们与实时任务分开以避免影响。  
+e) 将visualization和modbus划归到核心1或核心0上，优先级设为20以上，此类任务不需要实时，将它们与实时任务分开以避免影响。  
 
-系统运行2小时后，监测到实时任务组抖动在±50us内，可以满足客户需求。  
+系统运行2小时后，监测到实时任务组抖动在±60us内，可以满足客户需求。  
 
+-----------
+
+从理论上说，`irqaffinity=0`及其它附加参数`nohz_full=2,3 rcu_nocbs=2,3 nowatchdog acpi_irq_nobalance`可以获得更好的实时性能，查询系统中断计数可以发现改善。但我们实际测试时发现EtherCAT的丢包率明显变大，并可能导致从站报错。  
+我怀疑是由于网卡驱动的中断响应不及时导致，但无法确认问题点。该问题和硬件也有弱关联性，将底板换一块会有改善，但问题仍然存在。  
+目前测试下来在只隔离核心的情况下已经可以获得很好的实时性，暂时不去查具体原因。未来更新系统将会进一步测试。  
 
 [返回上一页](https://github.com/feecat/codepi)
