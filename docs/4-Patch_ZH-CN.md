@@ -92,7 +92,7 @@ sudo apt-get purge fake-hwclock
 ```
 @xset dpms 0 0 0
 @xset s off
-@/usr/bin/chromium-browser --kiosk http://localhost:8080/webvisu.htm --no-first-run --touch-events=enabled --fast --fast-start --disable-popup-blocking --disable-infobars --disable-session-crashed-bubble --disable-tab-switcher --disable-translate --enable-low-res-tiling
+@taskset --cpu-list 0,1 /usr/bin/chromium-browser --kiosk http://localhost:8080/webvisu.htm --no-first-run --touch-events=enabled --fast --fast-start --disable-popup-blocking --disable-infobars --disable-session-crashed-bubble --disable-tab-switcher --disable-translate --enable-low-res-tiling --disable-gpu
 ```
 这将禁用桌面的加载，并在开机后自动打开chromium并全屏显示指定页面。
 
