@@ -77,7 +77,7 @@ sudo hwclock -r
 sudo hwclock --systohc
 sudo apt-get purge fake-hwclock
 ```
-若您重新冷启动发现时间仍未正确设置，则在/etc/udev/rules.d下创建85-hwclock.rules文件，文件内容为：  
+在/etc/udev/rules.d下创建85-hwclock.rules文件，文件内容为：  
 ```KERNEL=="rtc0", RUN+="/sbin/hwclock --rtc=$root/$name --hctosys"```  
 除此之外，我们还建议使用```sudo timedatectl set-ntp false```以禁用NTP同步。  
 
@@ -88,13 +88,14 @@ sudo apt-get purge fake-hwclock
 系统集成商一般不希望在产品中出现其它品牌相关的内容。在整个开关机和使用流程中都不能出现。  
 在 Preferences-Raspberry Pi Configuration 或 raspi-config 中禁用Splash Screen（可选）。  
 编辑/boot/cmdline.txt，最前面加上```logo.nologo ``` 以关闭启动界面的树莓派LOGO显示。  
-编辑/etc/xdg/lxsession/LXDE-pi/autostart，在原先的内容前加#号，并在末尾加上：  
+在左上角图标上右键-Menu Settings，Icon改成`emblem-debian`或您自己的LOGO。路径在`/usr/share/icons/`。  
+编辑/etc/xdg/lxsession/LXDE-pi/autostart，在末尾加上：  
 ```
 @xset dpms 0 0 0
 @xset s off
 @taskset --cpu-list 0,1 /usr/bin/chromium-browser --kiosk http://localhost:8080/webvisu.htm --no-first-run --touch-events=enabled --fast --fast-start --disable-popup-blocking --disable-infobars --disable-session-crashed-bubble --disable-tab-switcher --disable-translate --enable-low-res-tiling --disable-gpu
 ```
-这将禁用桌面的加载，并在开机后自动打开chromium并全屏显示指定页面。
+这将禁用屏幕保护，并在开机后自动打开chromium并全屏显示指定页面。  
 
 </br>
 
