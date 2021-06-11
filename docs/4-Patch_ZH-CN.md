@@ -6,25 +6,11 @@
 
 ### 4.1 安装PreemptRT补丁（可选）
 
-下载 [编译后的内核文件](https://github.com/feecat/codepi/blob/main/rt-kernel_5.4.75-rt41.tgz)  
+下载 [编译后的内核文件](https://github.com/feecat/codepi/tree/main/rt-kernel_5.4.75-rt41)  
 使用VNC或winscp拷贝到树莓派/home/pi/tmp下  
-打开终端，依次输入:  
-```
-cd tmp
-sudo tar xzf rt-kernel_5.4.75-rt41.tgz
-cd boot
-sudo cp -rd * /boot/
-cd ../lib
-sudo cp -rd * /lib/
-cd ../overlays
-sudo cp -d * /boot/overlays
-cd ..
-sudo cp -d bcm* /boot/
-```
-然后编辑/boot/config.txt，文件末尾加上```kernel=kernel7l-rt.img``` 。  
-（可以用在终端输入sudo pcmanfm以管理员权限打开文件管理器，也可以直接输入sudo nano /boot/config.txt在终端中编辑。）  
-
-之后输入sudo reboot now重启即可。
+打开终端，进入tmp文件夹，输入`sudo ./install.sh`等待安装完成即可。  
+若需要安装头文件，输入`sudo apt install ./linux-headers-5.4.75-rt41-v7l_5.4.75-rt41-v7l-1_armhf.deb`等待安装完成即可。  
+之后输入sudo reboot now重启，使用`uname -r`确认已切换到实时内核。
 
 </br>
 
