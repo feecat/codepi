@@ -25,6 +25,21 @@ A：参阅以下链接
 http://bbs.hicodesys.com/data/attachment/forum/201711/07/130521bhxfgyux80llxpxu.attach  
 https://item.jd.com/12401418.html  
 
+Q：如何使用USB转232、485设备？  
+A：编辑`/etc/CODESYSControl_User.cfg`，将SysCom设置修改为如下：  
+```
+[SysCom]
+Linux.Devicefile=/dev/ttyUSB
+```
+
+Q：如何使用USB转CAN设备（HUB4C）？  
+A：编辑`/etc/CODESYSControl_User.cfg`，在末尾增加如下行：  
+```
+[CmpSocketCanDrv]
+ScriptPath=/opt/codesys/scripts/
+ScriptName=rts_set_baud.sh
+```
+
 
 </br>
 
