@@ -22,8 +22,8 @@
 
 准备就绪后，按下列步骤操作：  
 1、插入CODEPI的MicroUSB接口，确保已插入电脑上（+5v供电，硬件切换到USBBOOT模式）。  
-2、连接供电。此时您应该看到蓝色指示灯长亮。  
-3、在电脑上运行rpiboot（开始菜单-Raspberry pi-rpiboot）。运行之后此电脑会多一个盘符。  
+2、连接供电。此时您应该看到蓝色指示灯点亮后瞬间熄灭。  
+3、在电脑上运行rpiboot（开始菜单-Raspberry pi-rpiboot）。运行之后此电脑会多一个盘符，此时蓝色指示灯常亮。  
 4、使用win32diskimager或balenaEtcher烧写固件，请注意不要选错盘符。  
 5、烧录完成后编辑boot盘的config.txt文件，末尾加上```dtoverlay=dwc2,dr_mode=host``` 。  
 6、烧录完成后断开主供电，待电源指示灯熄灭后断开MicroUSB。  
