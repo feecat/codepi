@@ -17,7 +17,12 @@
 ### 4.2 UPS设置（推荐）
 
 只要安装了电池并想启用UPS功能就要打开。利用dtoverlay来实现自动关机。  
-编辑/boot/config.txt，文件末尾加上```dtoverlay=gpio-shutdown,gpio_pin=4``` 。
+编辑/boot/config.txt，文件末尾加上```dtoverlay=gpio-shutdown,gpio_pin=4``` 。  
+编辑/etc/systemd/system.conf，将以下两行解除屏蔽并将时间修改为10s：  
+```
+DefaultTimeoutStartSec=10s
+DefaultTimeoutStopSec=10s
+```
 
 </br>
 
