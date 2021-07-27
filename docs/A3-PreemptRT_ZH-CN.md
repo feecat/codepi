@@ -13,19 +13,24 @@
 A：降低占用  
 由于不支持TargetVisu，我们使用的是WebVisu，借用Chromium的kiosk模式全屏显示以达到TargetVisu的效果。  
 但在打开瞬间会占用CPU资源，我们可以编辑`/etc/xdg/lxsession/LXDE-pi/autostart`，在最后一句 “chromium-browser...”前加#号并保存，即可禁用Visualization自启动。在某些极限条件下，建议使用官方的无头系统烧录并按教程设置。  
-如果开机时经常遇到总线故障，可以延时启动codesyscontrol或在启动一段时间后将总线自动重启。  
-程序中重启总线和轴的代码如下：  
+如果开机时遇到总线故障，可以延时启动总线。在程序中延迟启动总线和轴复位的代码如下：  
 ```
-IF xResetEtherCAT THEN
-	EtherCAT_Master_SoftMotion.xRestart:=TRUE;
+IF NOT xInit THEN
+	EtherCAT_Master_SoftMotion.xStopBus:=TRUE;
 	EtherCAT_Master_SoftMotion();
+	tonDelay(IN:=TRUE,PT:=T#10S);
+	IF tonDelay.Q THEN
+		tonDelay(IN:=FALSE);
+		xInit := TRUE;
+	END_IF
 ELSE
-	EtherCAT_Master_SoftMotion.xRestart:=FALSE;
+	EtherCAT_Master_SoftMotion.xStopBus:=FALSE;
 	EtherCAT_Master_SoftMotion();
 END_IF
 
 IF xResetAxisX THEN
-	x.SetCommunicationState(eRequestedState:=2);
+	Axis_X.SetCommunicationState(eRequestedState:=2);
+	xResetAxisX:=FALSE;
 END_IF
 ```
 
