@@ -33,6 +33,8 @@ IF xResetAxisX THEN
 	xResetAxisX:=FALSE;
 END_IF
 ```
+-亦可参考[how-to-reset-the-ethercat-bus](https://community.parker.com/technologies/electromechanical-group/w/electromechanical-knowledge-base/2252/how-to-reset-the-ethercat-bus)  
+
 
 
 B：程序优化  
@@ -47,6 +49,7 @@ d）将visu、modbus等非实时任务安排到第一或第二核心上（核心
 此外，当使用DC（挂载总线伺服，并使用凸轮或cnc功能）时，需编辑EtherCAT Master的隐性参数，通过以下方式变更：  
 1、勾选主菜单：Tools -> Options.. -> Device editor -> Show generic device configuration views。  
 2、双击EtherCAT_Master_Softmotion设备，转到EtherCAT Parameters选项卡，将DCSyncInWindow修改到500以上即可。还可以根据实际情况使能SplitFrame。  
+-参考[Implicit Instance of the Master](https://help.codesys.com/webapp/_ecat_lib_inst_master;product=core_EtherCAT_Configuration_Editor;version=3.5.16.0)  
 
 -----------
 
