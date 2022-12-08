@@ -4,12 +4,35 @@
 
 ## 4、安装实时补丁包、系统设置、实时时钟设置、ETH1端口设置等 
 
+注：出厂镜像已做过下列所有设置，此处供您参考。  
+
 ### 4.1 安装PreemptRT补丁（可选）
 
-下载 [编译后的内核文件](https://github.com/feecat/codepi/tree/main/rt-kernel_5.4.75-rt41)  
+下载 [编译后的内核文件 by kdoren](https://github.com/kdoren/linux/releases)  
 使用VNC或winscp拷贝到树莓派/home/pi/tmp下  
-打开终端，进入tmp文件夹，输入`sudo ./install.sh`等待安装完成即可。  
-若需要安装头文件，输入`sudo apt install ./linux-headers-5.4.75-rt41-v7l_5.4.75-rt41-v7l-1_armhf.deb`等待安装完成即可。  
+在tmp文件夹下创建install.sh，内容为：
+```
+apt install ./linux-image-5.15.65-rt49-v7l+_5.15.65-1_armhf.deb 
+KERN=5.15.65-rt49-v7l+
+mkdir -p /boot/$KERN/overlays/
+cp -d /usr/lib/linux-image-$KERN/overlays/* /boot/$KERN/overlays/
+cp -dr /usr/lib/linux-image-$KERN/* /boot/$KERN/
+touch /boot/$KERN/overlays/README
+mv /boot/vmlinuz-$KERN /boot/$KERN/
+mv /boot/System.map-$KERN /boot/$KERN/
+cp /boot/config-$KERN /boot/$KERN/
+cp /boot/cmdline.txt /boot/$KERN/cmdline.txt
+
+cat >> /boot/config.txt << EOF
+[all]
+kernel=vmlinuz-$KERN
+# initramfs initrd.img-$KERN
+os_prefix=$KERN/
+overlay_prefix=overlays/
+EOF
+```
+（版本迭代需自行修改名称）  
+给予文件执行权限，打开终端，输入`sudo /home/pi/tmp/install.sh`等待安装完成即可。  
 之后输入sudo reboot now重启，使用`uname -r`确认已切换到实时内核。
 
 </br>
@@ -26,55 +49,21 @@ DefaultTimeoutStopSec=10s
 
 </br>
 
-### 4.3 USB设置（必须）
-
-两个USB-A端口使用的是usb host模式，需要打开才可使用。  
-编辑/boot/config.txt，在末尾加上```dtoverlay=dwc2,dr_mode=host``` 。  
-如果在上电时忘记修改，则需要重新以usbboot模式加载并修改config文件。
-
-</br>
-
-### 4.4 ETH1设置（推荐）
-
-在 Preferences-Raspberry Pi Configuration 或 raspi-config 中打开SPI。  
-然后编辑/boot/config.txt，在末尾加上```dtoverlay=w5500,int_pin=22,speed=10000000``` 。  
-由于W5500硬件缺陷，我们还需要编辑/etc/rc.local，在exit 0之前插入如下内容以对芯片复位：  
-```
-echo "24" > /sys/class/gpio/export
-echo "out" > /sys/class/gpio/gpio24/direction
-echo "0" > /sys/class/gpio/gpio24/value
-echo "1" > /sys/class/gpio/gpio24/value
-sudo rmmod spi_bcm2835
-sudo modprobe spi_bcm2835
-```
-若您希望ETH1为固定IP，则编辑/etc/dhcpcd.conf，在末尾加上如下两行：
-```
-interface eth1
-static ip_address=192.168.1.101
-```
-
-</br>
-
-### 4.5 RTC设置（推荐）
+### 4.3 RTC设置（推荐）
 
 在 Preferences-Raspberry Pi Configuration 或 raspi-config 中打开I2C。  
 然后编辑/boot/config.txt，在末尾加上```dtoverlay=i2c-rtc,pcf8563``` 。  
-终端输入sudo reboot now重启，重启后使用该代码检查是否正确连接：```sudo hwclock -r``` 。  
-若已正确连接，在终端中依次输入：  
+重启，在终端中依次输入：  
 ```
 sudo date --set '2020-12-12 12:12:12'
 sudo hwclock -w
 sudo hwclock -r
 sudo hwclock --systohc
-sudo apt-get purge fake-hwclock
 ```
-在/etc/udev/rules.d下创建85-hwclock.rules文件，文件内容为：  
-```KERNEL=="rtc0", RUN+="/sbin/hwclock --rtc=$root/$name --hctosys"```  
-除此之外，我们还建议使用```sudo timedatectl set-ntp false```以禁用NTP同步。  
 
 </br>
 
-### 4.6 关闭树莓派LOGO及全屏自启Chromium（可选）
+### 4.4 关闭树莓派LOGO及全屏自启Chromium（可选）
 
 系统集成商一般不希望在产品中出现其它品牌相关的内容。在整个开关机和使用流程中都不能出现。  
 在 Preferences-Raspberry Pi Configuration 或 raspi-config 中禁用Splash Screen（可选）。  
@@ -90,9 +79,23 @@ sudo apt-get purge fake-hwclock
 
 </br>
 
-### 4.7 使用image-backup备份系统（推荐）
+### 4.5 实时性优化
 
-请参阅[https://github.com/scruss/RonR-RaspberryPi-image-utils](https://github.com/scruss/RonR-RaspberryPi-image-utils)
+建议关闭桌面及visu显示，并将CPU频率固定为1.5GHz以保证实时性，具体操作如下：  
+终端输入sudo raspi-config -> System Options -> Boot/Auto Login -> Console，关闭桌面及本机visu。（visu仍可远程访问）  
+编辑/boot/config.txt，末尾加上`force_turbo=1`。  
+
+</br>
+
+### 4.6 使用image-backup备份系统（推荐）
+
+下载[image-backup脚本](https://github.com/scruss/RonR-RaspberryPi-image-utils)并拷入到树莓派tmp文件夹中。  
+若设备在console模式，则需要在终端中执行startx启动桌面以自动挂载U盘。  
+插入NTFS格式U盘，剩余空间10G以上。在终端中执行`sudo /home/pi/tmp/image-backup`  
+输入保存的位置，例如`/media/pi/myusb/backup.img`  
+给定镜像大小，直接回车。  
+给定扩充大小，一般输入100回车。  
+等待备份完成即可。  
 
 
 </br>
