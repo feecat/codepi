@@ -14,20 +14,20 @@
 
 </br>
 
-下载并解压后，您会得到一个IMG文件，例如2020-12-02-raspios-buster-armhf.img，同时您还要准备以下两个工具：
-- [rpiboot](https://github.com/raspberrypi/usbboot/raw/master/win32/rpiboot_setup.exe) ，用于切换到USBBOOT模式并以大容量移动存储模式加载
-- 烧录工具，如 [Win32DiskImager](https://sourceforge.net/projects/win32diskimager/) 或 [balenaEtcher](https://www.balena.io/etcher/) 。   
+下载并解压后，您会得到一个IMG文件，例如2020-12-02-raspios-buster-armhf.img，同时您还要准备以下两个工具：  
+- [rpiboot](https://github.com/raspberrypi/usbboot/raw/master/win32/rpiboot_setup.exe) ，用于切换到USBBOOT模式并以大容量移动存储模式加载  
+- 烧录工具，如 [Win32DiskImager](https://sourceforge.net/projects/win32diskimager/) 或 [balenaEtcher](https://www.balena.io/etcher/) 。  
+此外，操作系统需要win10或win11。（win7不可用）   
 
 </br>
 
 准备就绪后，按下列步骤操作：  
-1、插入CODEPI的MicroUSB接口，确保已插入电脑上（+5v供电，硬件切换到USBBOOT模式）。  
-2、连接供电。此时您应该看到蓝色指示灯点亮后瞬间熄灭。  
+1、插入CODEPI的MicroUSB接口，确保已插入电脑上（+5v供电，硬件自动切换到USBBOOT模式）。  
+2、连接供电。此时您应该看到蓝色指示灯点亮后瞬间熄灭，电脑设备管理器里多出BCM2711 boot设备。  
 3、在电脑上运行rpiboot（开始菜单-Raspberry pi-rpiboot）。运行之后此电脑会多一个盘符，此时蓝色指示灯常亮。  
-4、使用win32diskimager或balenaEtcher烧写固件，请注意不要选错盘符。  
-5、烧录完成后编辑boot盘的config.txt文件，末尾加上```dtoverlay=dwc2,dr_mode=host``` 。  
-6、烧录完成后断开主供电，待电源指示灯熄灭后断开MicroUSB。  
-7、连接主供电、显示设备和键盘鼠标，等待系统安装完成  
+4、使用win32diskimager或balenaEtcher烧写固件，请注意不要选错盘符。烧录过程需要15分钟，请保持良好的usb连接。  
+5、烧录完成后断开主供电和MicroUSB。  
+6、重新连接主供电、显示设备和键盘鼠标，等待系统安装完成。首次安装会自动设置硬盘并自动重启，需要3~5分钟，期间请勿断电。  
 
 </br>
 
