@@ -52,6 +52,14 @@ A：参阅以下链接
 http://bbs.hicodesys.com/data/attachment/forum/201711/07/130521bhxfgyux80llxpxu.attach  
 https://item.jd.com/12401418.html  
 
+Q：dmesg报警显示MAI: soc_pcm_open() failed (-19)  
+A：该报警无影响，亦可通过`sudo apt-get purge pulseaudio`禁用音频以移除报警。  
+
+Q：如何恢复Desktop桌面？  
+A：部分客户会希望使用TargetVisu本机显示或第三方app，可通过sudo raspi-config -> System Options -> Boot/Auto Login -> Desktop autologin启用桌面，但会降低实时性。  
+
+
+
 </br>
 
 [返回上一页](https://github.com/feecat/codepi)
