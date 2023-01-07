@@ -40,11 +40,16 @@ Linux.Devicefile=/dev/ttyUSB
 ```
 
 Q：如何使用USB转CAN设备（HUB4C）？  
-A：编辑`/etc/CODESYSControl_User.cfg`，在末尾增加如下行：  
+A：编辑`/etc/CODESYSControl_User.cfg`，在末尾增加如下行（4.5.0.0之后不再需要）：  
 ```
 [CmpSocketCanDrv]
 ScriptPath=/opt/codesys/scripts/
 ScriptName=rts_set_baud.sh
+```
+此外，can驱动晚于codesyscontrol加载，建议在启动后重启一次codesys服务，编辑`/etc/rc.local`，在exit 0之前插入如下行：  
+```
+sleep 5
+sudo service codesyscontrol restart
 ```
 
 Q：我是新手，如何开始学习CoDeSys？  
